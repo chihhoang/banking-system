@@ -7,7 +7,6 @@ public class Savings extends Account {
 	public Savings() {}
 	public Savings(double initialDeposit) {
 		setBalance(initialDeposit);
-
 		checkInterest();
 	}
 
@@ -16,7 +15,7 @@ public class Savings extends Account {
 		return "Account type: " + accountType + " account\n"
 				+ "Account number: " + getAccountNumber() + "\n"
 				+ "Balance: $" + getBalance() + "\n"
-				+ "Interest: " + getInterest() + "%\n";
+				+ "Interest: " + getInterest() + "%";
 	}
 
 }

@@ -43,12 +43,10 @@ public class Menu {
 		System.out.println("|--Banking Application--|");
 		System.out.println("|-----------------------|");
 		System.out.println("|-----------------------|");
-
 	}
 
 	public void printMenu() {
-		System.out.println();
-		System.out.println("Please choose an option");
+		displayHeader("Please choose an option");
 		System.out.println("1. Create new account");
 		System.out.println("2. Make a deposit");
 		System.out.println("3. Make a withdraw");
@@ -77,6 +75,7 @@ public class Menu {
 		return choice;
 	}
 
+	// perform action according to user input
 	private void performAction(int choice) {
 		switch (choice) {
 			case 0 :
@@ -128,8 +127,9 @@ public class Menu {
 		boolean valid = false;
 		while (!valid) {
 			System.out.print("Please enter an initial deposit: ");
+			input = keyboard.nextLine();
 			try {
-				initialDeposit = Double.parseDouble(keyboard.nextLine());
+				initialDeposit = Double.parseDouble(input);
 			} catch (NumberFormatException e) {
 				System.out.println("Initial deposit must be a number");
 				continue;
@@ -157,6 +157,7 @@ public class Menu {
 	}
 
 	private void createAccount() throws InvalidAccountTypeException {
+		displayHeader("Create an account");
 		String accountType;
 
 		String firstName, lastName, ssn;
@@ -178,18 +179,20 @@ public class Menu {
 
 		Customer customer = new Customer(firstName, lastName, ssn, account);
 		bank.addCustomer(customer);
-
+		System.out.println("Account was successfully created with id "
+										+ customer.getAccount().getAccountNumber() + " and an initial balance of $" + customer.getAccount().getBalance());
 	}
 
 	private void listBalance() {
+		displayHeader("Account details");
 		int account = selectAccount();
 		if (account >= 0) {
 			System.out.println(bank.getCustomer(account).getAccount());
 		}
 	}
 
-	// helper method to get the amount to withdraw or deposit
-	private double getAmount(String message) {
+	// helper method to get the dollar amount to withdraw or deposit
+	private double getDollarAmount(String message) {
 		System.out.println(message);
 
 		double amount = 0.0;
@@ -205,19 +208,20 @@ public class Menu {
 	}
 
 	private void makeWithdrawal() {
+		displayHeader("Make a withdrawal");
 		int account = selectAccount();
 		if (account >= 0) {
-			double amount = getAmount("How much would you like to withdraw? ");
+			double amount = getDollarAmount("How much would you like to withdraw? ");
 
 			bank.getCustomer(account).getAccount().withdraw(amount);
 		}
-
 	}
 
 	private void makeDeposit() {
+		displayHeader("Make a deposit");
 		int account = selectAccount();
 		if (account >= 0) {
-			double amount = getAmount("How much would you like to deposit? ");
+			double amount = getDollarAmount("How much would you like to deposit? ");
 
 			bank.getCustomer(account).getAccount().deposit(amount);
 		}
@@ -234,7 +238,7 @@ public class Menu {
 		while (account < 0 || account > customers.size() - 1) {
 			System.out.println("Select an account: ");
 			for (int i = 0; i < customers.size(); i++) {
-				System.out.println(i + 1 + ". " + customers.get(i).basicInfo());
+				System.out.println("\t" + (i + 1) + ". " + customers.get(i).basicInfo());
 			}
 
 			System.out.print("Please enter your selection: ");
@@ -248,6 +252,22 @@ public class Menu {
 		}
 
 		return account;
+	}
+
+	// helper method to display a header for each option
+	private void displayHeader(String message) {
+		System.out.println();
+		int width = message.length() + 6;
+		StringBuilder sb = new StringBuilder();
+		sb.append("*");
+		for (int i = 0; i < width - 2; i++) {
+			sb.append("-");
+		}
+		sb.append("*");
+
+		System.out.println(sb);
+		System.out.println("|  " + message + "  |");
+		System.out.println(sb);
 	}
 
 }

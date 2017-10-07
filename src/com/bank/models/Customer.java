@@ -55,14 +55,12 @@ public class Customer {
 				+ "First name: " + firstName + "\n"
 				+ "Last name: " + lastName + "\n"
 		    + "SSN: " + ssn + "\n"
-		    +  account +"\n";
+		    +  account;
 	}
 
 	public String basicInfo() {
-		return "First name: " + firstName
-				+ " | Last name: " + lastName
-		    + " | SSN: " + ssn
-		    + " | Account number: " + account.getAccountNumber() + "\n";
+		return "Account number: " + account.getAccountNumber()
+			+ " | Name: " + firstName + " " + lastName;
 	}
 
 }

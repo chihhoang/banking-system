@@ -7,7 +7,6 @@ public class Checking extends Account {
 	public Checking() {}
 	public Checking(double initialDeposit) {
 		setBalance(initialDeposit);
-
 		checkInterest();
 	}
 
@@ -16,6 +15,6 @@ public class Checking extends Account {
 		return "Account type: " + accountType + " account\n"
 				+ "Account number: " + getAccountNumber() + "\n"
 				+ "Balance: $" + getBalance() + "\n"
-				+ "Interest: " + getInterest() + "%\n";
+				+ "Interest: " + getInterest() + "%";
 	}
 }
