@@ -5,17 +5,22 @@
  */
 package com.bank.menu;
 
+import com.bank.models.Bank;
+
 /**
  *
  * @author chihoang
  */
 public class MainMenu extends javax.swing.JFrame {
-
+  private Bank bank;
     /**
      * Creates new form MainMenu
      */
     public MainMenu() {
-        initComponents();
+      initComponents();
+      setLocationRelativeTo(null);
+      setTitle("Bank Application");
+      bank = new Bank();
     }
 
     /**
@@ -42,6 +47,11 @@ public class MainMenu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         addButton.setText("Add Account");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
 
         removeButton.setText("Remove Account");
         removeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -169,6 +179,12 @@ public class MainMenu extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         this.dispose();
     }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        AddAccountMenu menu = new AddAccountMenu(this, true, bank);
+        menu.setVisible(true);
+        System.out.println("");
+    }//GEN-LAST:event_addButtonActionPerformed
 
     /**
      * @param args the command line arguments
