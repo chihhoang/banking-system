@@ -21,7 +21,8 @@ import javax.swing.JOptionPane;
  */
 public class AddAccountMenu extends javax.swing.JDialog {
   
-  private Bank bank; 
+  private Bank bank;
+  private Customer customer;
 
     /**
      * Creates new form AddAccountMenu
@@ -153,24 +154,33 @@ public class AddAccountMenu extends javax.swing.JDialog {
       // Display any warning message
       if (warnings.length() > 0) {
         JOptionPane.showMessageDialog(this, warnings.toString(), "Input Error", JOptionPane.WARNING_MESSAGE);
-      } else { // Or create an account
+      } else { // Create an account
         Account account = null;
         if (typeBox.getSelectedItem().toString().equalsIgnoreCase("Checking")) {
-          account = new Checking();
+          if (initialDeposit >= 100) {
+            account = new Checking(initialDeposit);
+          } else {
+            warnings.append("Initial deposit for checking account must be at least $100");
+          }
         } else if (typeBox.getSelectedItem().toString().equalsIgnoreCase("Savings")) {
-          account = new Savings();
+          if (initialDeposit >= 50) {
+            account = new Savings(initialDeposit);
+          } else {
+            warnings.append("Initial deposit for savings account must be at least $50");
+          }
         } else {
           System.out.println("Shouldn't be here");
         }
         
-        System.out.println("account info " + account.getBalance() + " " + account.getInterest());
-        Customer customer = new Customer(firstName, lastName, ssn, account);
+        if (account != null) {
+        customer = new Customer(firstName, lastName, ssn, account);
         bank.addCustomer(customer);
         
         this.dispose();
+        } else {
+          JOptionPane.showMessageDialog(this, warnings.toString(), "Input Error", JOptionPane.WARNING_MESSAGE);
+        }
       }
-      
-      
     }//GEN-LAST:event_okButtonActionPerformed
     
     public static double round(double value, int places) {
@@ -201,4 +211,10 @@ public class AddAccountMenu extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> typeBox;
     private javax.swing.JLabel typeLabel;
     // End of variables declaration//GEN-END:variables
+    
+    public Customer getCustomer() {
+      return customer;
+    }
+
+
 }

@@ -5,7 +5,7 @@ public class Account {
 	private double balance = 0;
 	private double interest = 0.0;
 	int accountNumber;
-	private static int numberOfAccounts = 1000000000;
+	private static int numberOfAccounts = 1000;
 
 	public Account() {
 		accountNumber = numberOfAccounts++;

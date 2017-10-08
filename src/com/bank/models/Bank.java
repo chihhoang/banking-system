@@ -31,5 +31,21 @@ public class Bank {
 		return customers.get(account);
 	}
 
+  public Customer getCustomerByAccountNumber(int accountNumber) {
+    Customer customer = null;
+    for (Customer c : customers) {
+      if (c.getAccount().getAccountNumber() == accountNumber) {
+        customer = c;
+        break;
+      }
+    }
+    
+    return customer;
+  }
+
+  public void remove(Customer customer) {
+    customers.remove(customer);
+  }
+
 
 }
