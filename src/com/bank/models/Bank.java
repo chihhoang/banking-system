@@ -1,11 +1,12 @@
 package com.bank.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bank {
+public class Bank implements Serializable {
 
 	private List<Customer> customers;
 
@@ -22,12 +23,21 @@ public class Bank {
 	}
 
 	public void addCustomer(Customer customer) {
+    if (customers.size() >= 1) {
+      customer.getAccount().setAccountNumber(getNextAccountNumber());
+    }
+    
 		customers.add(customer);
 	}
-
-	public int selectAccount() {
-		return 1;
-	}
+  
+  public int getNextAccountNumber() {
+    int max = -1;
+    for (Customer c : customers) {
+      max = Math.max(max, c.getAccount().getAccountNumber());
+    }
+    
+    return max + 1;
+  }
 
 	public Customer getCustomer(int account) {
 		return customers.get(account);

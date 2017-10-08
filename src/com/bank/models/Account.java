@@ -2,8 +2,9 @@ package com.bank.models;
 
 import com.bank.exceptions.InsufficientFundsException;
 import com.bank.exceptions.InvalidAmountException;
+import java.io.Serializable;
 
-public abstract class Account {
+public abstract class Account implements Serializable {
 
 	private double balance = 0.0;
 	private double interest = 0.0;
@@ -36,6 +37,10 @@ public abstract class Account {
 	public int getAccountNumber() {
 		return accountNumber;
 	}
+  
+  public void setAccountNumber(int accountNumber) {
+    this.accountNumber = accountNumber;
+  }
   
   public void setTransactionFee(double fee) {
     this.transactionFee = fee;
