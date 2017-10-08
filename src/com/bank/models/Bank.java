@@ -26,16 +26,16 @@ public class Bank implements Serializable {
     if (customers.size() >= 1) {
       customer.getAccount().setAccountNumber(getNextAccountNumber());
     }
-    
+
 		customers.add(customer);
 	}
-  
+
   public int getNextAccountNumber() {
     int max = -1;
     for (Customer c : customers) {
       max = Math.max(max, c.getAccount().getAccountNumber());
     }
-    
+
     return max + 1;
   }
 
@@ -51,14 +51,14 @@ public class Bank implements Serializable {
         break;
       }
     }
-    
+
     return customer;
   }
 
   public void remove(Customer customer) {
     customers.remove(customer);
   }
-  
+
   public static double round(double value, int places) {
     if (places < 0) throw new IllegalArgumentException();
 
