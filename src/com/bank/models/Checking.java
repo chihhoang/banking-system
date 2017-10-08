@@ -8,6 +8,7 @@ public class Checking extends Account {
 	public Checking(double initialDeposit) {
 		setBalance(initialDeposit);
 		checkInterest();
+    setTransactionFee(5);
 	}
 
 	@Override
@@ -15,6 +16,6 @@ public class Checking extends Account {
 		return "Account type: " + accountType + " account\n"
 				+ "Account number: " + getAccountNumber() + "\n"
 				+ "Balance: $" + getBalance() + "\n"
-				+ "Interest: " + getInterest() + "%";
+				+ "Interest: " + getInterest() * 100 + "%";
 	}
 }

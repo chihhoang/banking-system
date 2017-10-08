@@ -145,7 +145,7 @@ public class AddAccountMenu extends javax.swing.JDialog {
         warnings.append("Initial deposit must not be empty.\n");
       } else {
         try {
-          initialDeposit = round(Double.parseDouble(depositField.getText()), 2);
+          initialDeposit = Bank.round(Double.parseDouble(depositField.getText()), 2);
         } catch (NumberFormatException e) {
           warnings.append("Initial deposit must be a number.\n");
         }
@@ -183,13 +183,7 @@ public class AddAccountMenu extends javax.swing.JDialog {
       }
     }//GEN-LAST:event_okButtonActionPerformed
     
-    public static double round(double value, int places) {
-      if (places < 0) throw new IllegalArgumentException();
 
-      BigDecimal bd = new BigDecimal(value);
-      bd = bd.setScale(places, RoundingMode.HALF_UP);
-      return bd.doubleValue();
-    }
     
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
       this.dispose();

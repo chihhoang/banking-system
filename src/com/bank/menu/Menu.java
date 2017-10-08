@@ -213,7 +213,7 @@ public class Menu {
 		if (account >= 0) {
 			double amount = getDollarAmount("How much would you like to withdraw? ");
 
-			bank.getCustomer(account).getAccount().withdraw(amount);
+//			bank.getCustomer(account).getAccount().withdraw(amount);
 		}
 	}
 
@@ -223,7 +223,7 @@ public class Menu {
 		if (account >= 0) {
 			double amount = getDollarAmount("How much would you like to deposit? ");
 
-			bank.getCustomer(account).getAccount().deposit(amount);
+//			bank.getCustomer(account).getAccount().deposit(amount);
 		}
 	}
 

@@ -1,9 +1,13 @@
 package com.bank.models;
 
-public class Account {
+import com.bank.exceptions.InsufficientFundsException;
+import com.bank.exceptions.InvalidAmountException;
 
-	private double balance = 0;
+public abstract class Account {
+
+	private double balance = 0.0;
 	private double interest = 0.0;
+  private double transactionFee = 0.0;
 	int accountNumber;
 	private static int numberOfAccounts = 1000;
 
@@ -20,7 +24,7 @@ public class Account {
 	}
 
 	public double getInterest() {
-		return interest * 100;
+		return interest;
 	}
 
 	public void setInterest(double interest) {
@@ -30,22 +34,28 @@ public class Account {
 	public int getAccountNumber() {
 		return accountNumber;
 	}
+  
+  public void setTransactionFee(double fee) {
+    this.transactionFee = fee;
+  }
+  
+  public double getTransactionfee() {
+    return transactionFee;
+  }
 
-	public void withdraw(double amount) {
-		if (amount + 5 > balance) {
-			System.out.println("You have insufficient funds.");
-			return;
+	public void withdraw(double amount) throws InsufficientFundsException {
+		if (amount + transactionFee > balance) {
+      throw new InsufficientFundsException();
 		}
 
-		balance -= amount + 5;
+		balance -= amount + transactionFee;
 		System.out.println("You have withdrawn $" + amount + " and incurred a fee of $5");
 		System.out.println("You now have a balance of $" + balance);
 	}
 
-	public void deposit(double amount) {
+	public void deposit(double amount) throws InvalidAmountException {
 		if (amount < 0) {
-			System.out.println("You cannot deposit negative money.");
-			return;
+			throw new InvalidAmountException();
 		}
 
 		checkInterest(); // from balance
@@ -54,8 +64,6 @@ public class Account {
 		}
 		amount = amount + amount * interest;
 		balance += amount;
-		System.out.println("You have deposited $" + amount + " with an interest of " + interest * 100 + "%");
-		System.out.println("You now have a balance of $" + balance);
 	}
 
 	public void checkInterest() {
