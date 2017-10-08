@@ -7,6 +7,7 @@ package com.bank.menu;
 
 import com.bank.models.Bank;
 import com.bank.models.Customer;
+import java.text.NumberFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -44,6 +45,8 @@ public class MainMenu extends javax.swing.JFrame {
     accountTable = new javax.swing.JTable();
     menuBar = new javax.swing.JMenuBar();
     fileMenu = new javax.swing.JMenu();
+    saveMenuItem = new javax.swing.JMenuItem();
+    openMenuItem = new javax.swing.JMenuItem();
     exitMenuItem = new javax.swing.JMenuItem();
     editMenu = new javax.swing.JMenu();
 
@@ -93,9 +96,16 @@ public class MainMenu extends javax.swing.JFrame {
       Class[] types = new Class [] {
         java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
       };
+      boolean[] canEdit = new boolean [] {
+        false, false, false, false
+      };
 
       public Class getColumnClass(int columnIndex) {
         return types [columnIndex];
+      }
+
+      public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
       }
     });
     accountTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -140,6 +150,19 @@ public class MainMenu extends javax.swing.JFrame {
     );
 
     fileMenu.setText("File");
+
+    saveMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/bank/resources/saveIcon.png"))); // NOI18N
+    saveMenuItem.setText("Save");
+    saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveMenuItemActionPerformed(evt);
+      }
+    });
+    fileMenu.add(saveMenuItem);
+
+    openMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/bank/resources/openIcon.png"))); // NOI18N
+    openMenuItem.setText("Open");
+    fileMenu.add(openMenuItem);
 
     exitMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/bank/resources/exit.png"))); // NOI18N
     exitMenuItem.setText("Exit");
@@ -236,7 +259,21 @@ public class MainMenu extends javax.swing.JFrame {
 
   private void accountTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accountTableMouseClicked
     setAccountButtonsActive(true);
+    
+    if (evt.getClickCount() == 2) {
+      int selectedRow = accountTable.getSelectedRow();      
+      Customer customer = getSelectedCustomer(selectedRow);
+      
+      if (customer != null) {
+        AccountDetailsPage details = new AccountDetailsPage(this, true, customer);
+        details.setVisible(true);
+      }
+    }
   }//GEN-LAST:event_accountTableMouseClicked
+
+  private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_saveMenuItemActionPerformed
     
     private void addCustomerToTable(Customer customer) {
       DefaultTableModel model = (DefaultTableModel) accountTable.getModel();
@@ -250,11 +287,13 @@ public class MainMenu extends javax.swing.JFrame {
     }
     
     private void reloadCustomerRowData(int selectedRow, Customer customer) {
+      NumberFormat formatter = NumberFormat.getCurrencyInstance();
+      
       DefaultTableModel model = (DefaultTableModel) accountTable.getModel();
       model.setValueAt(customer.getFirstName(), selectedRow, 0);
       model.setValueAt(customer.getLastName(), selectedRow, 1);
       model.setValueAt(customer.getAccount().getAccountNumber(), selectedRow, 2);
-      model.setValueAt(String.format("%.2f", customer.getAccount().getBalance()), selectedRow, 3);
+      model.setValueAt(formatter.format(customer.getAccount().getBalance()), selectedRow, 3);
     }
     
     private void reloadTable() {
@@ -311,7 +350,9 @@ public class MainMenu extends javax.swing.JFrame {
   private javax.swing.JMenu fileMenu;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JMenuBar menuBar;
+  private javax.swing.JMenuItem openMenuItem;
   private javax.swing.JButton removeButton;
+  private javax.swing.JMenuItem saveMenuItem;
   private javax.swing.JButton withdrawButton;
   // End of variables declaration//GEN-END:variables
 

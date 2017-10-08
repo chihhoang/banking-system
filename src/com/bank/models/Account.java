@@ -8,12 +8,14 @@ public abstract class Account {
 	private double balance = 0.0;
 	private double interest = 0.0;
   private double transactionFee = 0.0;
-	int accountNumber;
+	private int accountNumber;
 	private static int numberOfAccounts = 1000;
 
 	public Account() {
 		accountNumber = numberOfAccounts++;
 	}
+  
+  public abstract String getAccountType();
 
 	public double getBalance() {
 		return balance;

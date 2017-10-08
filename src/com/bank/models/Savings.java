@@ -19,4 +19,8 @@ public class Savings extends Account {
 				+ "Interest: " + getInterest() * 100 + "%";
 	}
 
+  @Override
+  public String getAccountType() {
+    return accountType;
+  }
 }

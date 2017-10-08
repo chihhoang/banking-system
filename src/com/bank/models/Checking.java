@@ -18,4 +18,9 @@ public class Checking extends Account {
 				+ "Balance: $" + getBalance() + "\n"
 				+ "Interest: " + getInterest() * 100 + "%";
 	}
+
+  @Override
+  public String getAccountType() {
+    return accountType;
+  }
 }
