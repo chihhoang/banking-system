@@ -5,12 +5,12 @@
  */
 package com.bank.menu;
 
+import javax.swing.JOptionPane;
+
 import com.bank.exceptions.InvalidAmountException;
+import com.bank.helpers.Formatter;
 import com.bank.models.Bank;
 import com.bank.models.Customer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,14 +19,17 @@ import javax.swing.JOptionPane;
 public class DepositMenu extends javax.swing.JDialog {
 
   private Customer customer;
+  private Bank bank;
+
   /**
    * Creates new form DepositMenu
    */
-  public DepositMenu(java.awt.Frame parent, boolean modal, Customer customer) {
+  public DepositMenu(java.awt.Frame parent, boolean modal, Bank bank, Customer customer) {
     super(parent, modal);
     initComponents();
     setLocationRelativeTo(parent);
     this.customer = customer;
+    this.bank = bank;
   }
 
   /**
@@ -51,7 +54,8 @@ public class DepositMenu extends javax.swing.JDialog {
     getContentPane().add(depositLabel);
 
     depositField.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
+      @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
         depositFieldActionPerformed(evt);
       }
     });
@@ -59,7 +63,8 @@ public class DepositMenu extends javax.swing.JDialog {
 
     depositButton.setText("Deposit");
     depositButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
+      @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
         depositButtonActionPerformed(evt);
       }
     });
@@ -67,7 +72,8 @@ public class DepositMenu extends javax.swing.JDialog {
 
     cancelButton.setText("Cancel");
     cancelButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
+      @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
         cancelButtonActionPerformed(evt);
       }
     });
@@ -91,17 +97,18 @@ public class DepositMenu extends javax.swing.JDialog {
       warnings.append("Deposit amount is required\n");
     } else {
       double amount = 0.0;
-      
+
       try {
         amount = Bank.round(Double.parseDouble(depositField.getText()), 2);
-        int result = JOptionPane.showConfirmDialog(this, "Deposit an amount of $" + String.format("%.2f", amount) + " to the account?");
-        
+        int result = JOptionPane.showConfirmDialog(this, "Deposit " + Formatter.formatDollar(amount) + " to the account?");
+
         if (result == JOptionPane.OK_OPTION) {
           try {
             // Make the deposit
-            customer.getAccount().deposit(amount);
+            bank.deposit(customer.getAccount().getAccountNumber(), amount);
             this.dispose();
-            JOptionPane.showMessageDialog(this, "Deposited an amount of $" + String.format("%.2f", amount) + "\nInterest Earned: $" + String.format("%.2f", customer.getAccount().getInterest() * amount));
+            JOptionPane.showMessageDialog(this, "Deposited an amount of " + Formatter.formatDollar(amount)
+            + "\nInterest Earned: " + Formatter.formatDollar(bank.checkInterest(customer.getAccount().getBalance(), 0) * amount));
 
           } catch (InvalidAmountException ex) {
             warnings.append("Deposit amount is invalid\n");
@@ -111,9 +118,9 @@ public class DepositMenu extends javax.swing.JDialog {
         warnings.append("Deposit must be a number.\n");
       }
     }
-    
+
     // Verify the deposit is a positive number
-      
+
     if (warnings.length() > 0) {
       JOptionPane.showMessageDialog(this, warnings.toString(), "Deposit Warnings", JOptionPane.WARNING_MESSAGE);
     }

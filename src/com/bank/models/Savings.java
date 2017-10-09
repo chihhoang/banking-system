@@ -1,26 +1,16 @@
 package com.bank.models;
 
+import com.bank.services.AccountType;
+
 public class Savings extends Account {
 
-	private static String accountType = "Savings";
-
-	public Savings() {}
-	public Savings(double initialDeposit) {
+	public Savings(int accountId, double initialDeposit) {
+		super(accountId);
 		setBalance(initialDeposit);
-		checkInterest();
-    setTransactionFee(5);
-	}
-
-	@Override
-	public String toString() {
-		return "Account type: " + accountType + " account\n"
-				+ "Account number: " + getAccountNumber() + "\n"
-				+ "Balance: $" + getBalance() + "\n"
-				+ "Interest: " + getInterest() * 100 + "%";
 	}
 
   @Override
-  public String getAccountType() {
-    return accountType;
+  public AccountType getAccountType() {
+    return AccountType.Savings;
   }
 }

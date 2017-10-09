@@ -74,7 +74,7 @@ public class DbService {
 			connection.setAutoCommit(false);
 
 			// add account
-			PreparedStatement stmt = connection.prepareStatement("insert into accounts(type, balance) values(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = connection.prepareStatement("insert into accounts(type, balance) values(?,?)", Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, accountType.name());
 			stmt.setDouble(2, balance);
 			stmt.executeUpdate();
@@ -133,11 +133,7 @@ public class DbService {
 					throw new Exception("Unknown account type");
 				}
 
-				if (account != null) {
-					customer = new Customer(firstName, lastName, ssn, account);
-				} else {
-					System.out.println("Cannot retrieve account");
-				}
+				customer = new Customer(firstName, lastName, ssn, account);
 			} else {
 				System.out.println("No user account was found for ID " + accountId);
 			}
@@ -179,9 +175,9 @@ public class DbService {
 
 		try {
 			PreparedStatement stmt = connection.prepareStatement("delete USERS, ACCOUNTS"
-					+ " from USERS u join MAPPINGS m on u.id = m.userid"
-					+ " join ACCOUNTS a on a.id = m.accountid"
-					+ " where a.id = ?");
+					+ " from USERS join MAPPINGS on USERS.id = MAPPINGS.userid"
+					+ " join ACCOUNTS on ACCOUNTS.id = MAPPINGS.accountid"
+					+ " where ACCOUNTS.id = ?");
 			stmt.setInt(1, accountId);
 			if (stmt.executeUpdate() > 0) {
 				success = true;
@@ -233,6 +229,8 @@ public class DbService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return customers;
 
 
 	}

@@ -5,35 +5,37 @@
  */
 package com.bank.menu;
 
-import com.bank.models.Customer;
 import java.text.NumberFormat;
+
+import com.bank.models.Bank;
+import com.bank.models.Customer;
 
 /**
  *
  * @author chihoang
  */
 public class AccountDetailsPage extends javax.swing.JDialog {
-  
+
   /**
    * Creates new form AccountDetailsPage
    */
-  public AccountDetailsPage(java.awt.Frame parent, boolean modal, Customer customer) {
+  public AccountDetailsPage(java.awt.Frame parent, boolean modal, Bank bank, Customer customer) {
     super(parent, modal);
     initComponents();
     setLocationRelativeTo(parent);
-    
+
     setTitle(String.format("Account Details Page - %s %s", customer.getFirstName(), customer.getLastName()));
-    
+
     NumberFormat formatter = NumberFormat.getCurrencyInstance();
-    
+
     firstNameField.setText(customer.getFirstName());
     lastNameField.setText(customer.getLastName());
     ssnField.setText(customer.getSsn());
-    typeField.setText(customer.getAccount().getAccountType());
+    typeField.setText(customer.getAccount().getAccountType().name());
     accountNumberField.setText(String.valueOf(customer.getAccount().getAccountNumber()));
     balanceField.setText(formatter.format(customer.getAccount().getBalance()));
-    interestField.setText(String.valueOf(customer.getAccount().getInterest() * 100) + "%");
-    feeField.setText(formatter.format(customer.getAccount().getTransactionfee()));
+    interestField.setText(String.valueOf(bank.checkInterest(customer.getAccount().getBalance(), 0) * 100) + "%");
+    feeField.setText(formatter.format(bank.getTransactionFee()));
   }
 
   /**
@@ -103,7 +105,8 @@ public class AccountDetailsPage extends javax.swing.JDialog {
 
     okButton.setText("OK");
     okButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
+      @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
         okButtonActionPerformed(evt);
       }
     });
